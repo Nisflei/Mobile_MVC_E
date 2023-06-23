@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.telas.mvc_e.R;
 import com.telas.mvc_e.controller.ClienteDAO;
+import com.telas.mvc_e.controller.ClienteDAOdb;
 import com.telas.mvc_e.model.Cliente;
 
 import java.text.DateFormat;
@@ -22,6 +23,8 @@ import java.util.Calendar;
 public class Formulario extends AppCompatActivity {
 
     private ClienteDAO clienteDao = new ClienteDAO();
+
+    private ClienteDAOdb clienteDAOdb = new ClienteDAOdb(this);
     private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class Formulario extends AppCompatActivity {
                 ((EditText) findViewById(R.id.email)).getText().toString(),
                 ((EditText) findViewById(R.id.data)).getText().toString()   );
 
-        clienteDao.salvar(cl);
+        clienteDAOdb.salvar(cl);
 
         finish();
 

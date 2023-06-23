@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.telas.mvc_e.R;
 import com.telas.mvc_e.controller.ClienteDAO;
+import com.telas.mvc_e.controller.ClienteDAOdb;
 import com.telas.mvc_e.model.Cliente;
 
 import java.util.Date;
@@ -26,24 +27,23 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private ClienteDAO clienteDAO = new ClienteDAO();
+    ListView listaClientes;
+    private ClienteDAOdb clienteDAOdb = new ClienteDAOdb(this);
     ArrayAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView listaClientes = findViewById(R.id.lista_cliente);
+        System.out.println(clienteDAOdb.toString());
+
+
+        listaClientes = findViewById(R.id.lista_cliente);
 
         registerForContextMenu(listaClientes);
 
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, clienteDAO.todos());
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, clienteDAOdb.todos());
         listaClientes.setAdapter(adapter);
-
-        //remover depois
-        //clienteDAO.salvar(new Cliente("Miguel","119988877766","Miguel@jbs.com", "12/12/2022"));
-       // clienteDAO.salvar(new Cliente("Lauro","119988877766","Lauro@jbs.com", "12/12/2022"));
-       // clienteDAO.salvar(new Cliente("Anna","119988877766","Anna@jbs.com", "12/12/2022"));
-        //
 
         FloatingActionButton bt = findViewById(R.id.floatingActionButton);
         bt.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +59,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG,clienteDAO.todos().toString());
-        adapter.notifyDataSetChanged();
+        Log.e(TAG,clienteDAOdb.todos().toString());
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, clienteDAOdb.todos());
+        listaClientes.setAdapter(adapter);
     }
 
     @Override
@@ -77,8 +78,10 @@ public class MainActivity extends AppCompatActivity {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             Cliente cliente = (Cliente)  adapter.getItem(info.position);
 
-            clienteDAO.remover(cliente);
-            adapter.notifyDataSetChanged();
+            clienteDAOdb.remover(cliente);
+            adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, clienteDAOdb.todos());
+            listaClientes.setAdapter(adapter);
+
         }
 
         if ( itemId == R.id.altera_item){

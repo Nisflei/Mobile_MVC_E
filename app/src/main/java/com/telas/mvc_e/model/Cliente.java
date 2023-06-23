@@ -28,6 +28,13 @@ public class Cliente implements Serializable {
         this.dataNasc = dataNasc;
     }
 
+    public Cliente(int id,String nome, String telefone, String email, String dataNasc) {
+        this.id = id;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+        this.dataNasc = dataNasc;
+    }
     public int getId() {
         return id;
     }
